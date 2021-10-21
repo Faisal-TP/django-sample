@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body onload="load();">
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <br>
+                <table id="table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>ADDRESS</th>
+                            <th>CONTACT</th>
+                            <th>GENDER</th>
+                            <th colspan="2" style="text-align: center">OPERATION</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <!--test-->
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+
+    <!--close test-->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            }
+        });
+        data = "";
+
+        function load() {
+            $.ajax({
+                url: 'displaydata',
+                type: 'GET',
+                success: function(response) {
+
+                    data = response.data;
+                    //console.log(data);
+                    $('.tr').remove();
+                    for (i = 0; i < response.data.length; i++) {
+                        $("#table").append("<tr class='tr'> <td> " + response.data[i].id + " </td> <td> " + response.data[i].name + " </td><td>" + response.data[i].address + "</td><td>" + response.data[i].contact + "</td><td>" + response.data[i].gender + "</td><td><button class='btn btn-danger' onclick='delete_(" + response.data[i].id + ");'>Delete</button></td><td><button class='btn btn-info' data-toggle='modal' data-target='#exampleModal'  onclick='viewsingle(" + response.data[i].id + ");'>Update</button></td></tr>");
+                    }
+                }
+            });
+        };
+
+        function delete_(id) {
+            $.ajax({
+                url: 'deletedata',
+                type: 'post',
+                data: {
+                    key_id: id
+                },
+                success: function(response) {
+                    alert(response.message);
+                    load();
+                }
+            });
+        };
+
+        function viewsingle(sid) {
+            $.ajax({
+                url: 'viewsingle',
+                type: 'post',
+                data: {
+                    single_id: sid
+                },
+                success: function(response) {
+                    //alert(response.message);
+                    pkid = response.sdata[0]['id']
+                    console.log(response.sdata[0]['name']);
+                    //load();
+                    document.getElementById('fname').value = response.sdata[0]['name'];
+                }
+            });
+        }
+
+        function update(key) {
+            console.log(key)
+        }
+    </script>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <label for="name">Name</label>
+                    <input id="fname" type="text" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick='update(pkid);'>Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

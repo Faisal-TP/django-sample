@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+	
+	
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        REGISTER ACCOUNT
+                    </div>
+                    <div class="card-body">
+                       
+                         
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <textarea class="form-control" id="address" name="address"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact">Contact</label>
+                                <input type="number" class="form-control" id="contact" name="contact" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact">Gender</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="gender" name="gender" value="Male" id="male">
+                                    <label class="form-check-label" for="male">
+                                      Male
+                                    </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input class="form-check-input" type="radio" id="gender" name="gender" value="Female" id="female">
+                                    <label class="form-check-label" for="male">
+                                      Female
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                              <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                              <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button onclick="submit();" type="submit" class="btn btn-primary">Register</button>
+                            <button type="reset" class="btn btn-primary">Clear</button>
+                     
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+     <script type="text/javascript">
+     $.ajaxSetup({
+ 	 		headers: { "X-CSRFToken": '{{csrf_token}}' }
+		});
+
+        data = "";
+        submit = function() {
+            $.ajax({
+                url: 'add',
+                type: 'POST',
+                data: {
+                    name: $('#name').val(),
+                    address: $('#address').val(),
+                    contact: $('#contact').val(),
+                    gender: $('#gender').val(),
+                    email: $('#email').val(),
+                    username: $('#username').val(),
+                    password: $('#password').val()
+                },
+                success: function(response) {
+                    alert(response.message);
+                    //load();
+                }
+            });
+
+            
+        };
+    </script>
+   
+</body>
+
+</html>
